@@ -10,6 +10,6 @@
 #ifndef MathsFuncs_H_   /* Include guard */
 #define MathsFuncs_H_
 
-void shuffle_bullets(char array[],short int BlankBullets,short int LiveBullets);
+void shuffle_bullets(char array[],short int *BlankBullets,short int *LiveBullets,short int *TotalBullets);
 int random_range(int min, int max);
 #endif

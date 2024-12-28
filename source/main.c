@@ -6,6 +6,14 @@
 #include <stdbool.h>
 #include "MathsFuncs.h"
 #include "game.h"
+
+
+enum GameStates {
+    ENDED,
+    PENDING,
+};
+
+
 int main()
 {
     while(1){
@@ -18,14 +26,15 @@ int main()
     scanf("%s", answer);
 
     if (strcmp(answer, "y") == 0) {
-        short int BlankBullets = random_range(1, 5);
-        short int LiveBullets = random_range(1, 5);
+        short int BlankBullets;
+        short int LiveBullets;
+        short int TotalBullets;
         short int Lives = random_range(2, 5);
-        short int TotalBullets = BlankBullets + LiveBullets;
-        shuffle_bullets(Bullets, BlankBullets, LiveBullets);
+        shuffle_bullets(Bullets, &BlankBullets, &LiveBullets,&TotalBullets);
 
         printf("Shuffled bullets: ");
-        printf("bullets 1.LiveBullets  0.BlankBullets \n");
+        printf("%d.LiveBullets ",LiveBullets);
+        printf("%d.BlankBullets\n ",BlankBullets);
         printf("\033[0;33m");
         for (int i = 0; i < BlankBullets + LiveBullets; i++) {
             printf("%d ", Bullets[i]);
@@ -41,9 +50,9 @@ int main()
         short int CurrentTurn = 0;
         short int CurrentRound = 1;
         short int CurrentShell = 0;
-        char GameStatus[10] = "pending";
         char answer2[10];
-        while(strcmp(GameStatus, "pending") == 0)
+        enum GameStates State = PENDING;
+        while(State == PENDING)
         {
             if (CurrentTurn == 0){                 //Praticamente il turno del giocatore  
                     printf("\033[0;36m");
@@ -84,9 +93,7 @@ int main()
                         }
 
                     }
-                    if (( CurrentShell > TotalBullets) || (PlayerLives == 0) || (DealerLives == 0)){
-                        strcpy(GameStatus, "Ended");
-                    }
+
                     
             }
             if (CurrentTurn == 1){             //Turno dell'IA per non dire codice che fa robe a 50/50
@@ -124,6 +131,10 @@ int main()
 
 
             }
+            if ((CurrentShell >= TotalBullets) || (PlayerLives <= 0) || (DealerLives <= 0)) {
+                State = ENDED;
+            }
+
 
 
         }
@@ -132,8 +143,7 @@ int main()
         printf("\033[0m");
         scanf("%s", answer);
         if (strcmp(answer, "y") == 0) {
-                printf("Thanks for playing! Goodbye.\n");
-                break; // Exit the loop and terminate the program
+                printf("Great.\n");
         }
         if (strcmp(answer, "n") == 0) {
                 printf("Thanks for playing! Goodbye.\n");

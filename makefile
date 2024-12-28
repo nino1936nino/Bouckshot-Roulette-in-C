@@ -1,5 +1,5 @@
 
-output: main.output MathsFuncs.o game.o
+output: main.o MathsFuncs.o game.o
 	gcc main.o MathsFuncs.o game.o -o output
 
 main.o: main.c MathsFuncs.h game.h
