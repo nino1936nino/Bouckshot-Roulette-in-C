@@ -23,9 +23,9 @@ int main()
     printf("\033[1;31m");
     printf("Welcome to buckshot roulette. Do you want to play? (y/n)\n");
     printf("\033[0m");
-    scanf("%s", answer);
+    menu_input_strings(answer , 10);
 
-    if (strcmp(answer, "y") == 0) {
+    if (strcmp(answer, "y\n") == 0) {
         short int BlankBullets;
         short int LiveBullets;
         short int TotalBullets;
@@ -51,6 +51,7 @@ int main()
         short int CurrentRound = 1;
         short int CurrentShell = 0;
         char answer2[10];
+        short int Score = 0;
         enum GameStates State = PENDING;
         while(State == PENDING)
         {
@@ -60,26 +61,30 @@ int main()
                     printf("\033[1;31m");
                     printf("do you wanna shoot you or the dealer?:) myself/dealer\n");
                     printf("\033[0m");
-                    scanf("%s", answer2);
-                    if (strcmp(answer2, "myself") == 0){
+                    menu_input_strings(answer2 , 10);
+                    if (strcmp(answer2, "myself\n") == 0){
                         if (Bullets[CurrentShell] == 1){
                             CurrentShell += 1;
                             printf("blud you shot yourself\n");
                             PlayerLives -= 1;
+                            Score -= 20;
                             ShowLives(CurrentTurn,PlayerLives,DealerLives);
+                            switchturn(&CurrentTurn);
                         }
                         else{
                             CurrentShell += 1;
+                            Score += 50;
                             printf("great you ain't dead\n");
                             ShowLives(CurrentTurn,PlayerLives,DealerLives);
                         }
                     }
-                    else if (strcmp(answer2, "dealer") == 0){
+                    else if (strcmp(answer2, "dealer\n") == 0){
                         printf("attemps to shoot the dealer\n");
                         if (Bullets[CurrentShell] == 1){
                             printf("\033[1;31m");
                             printf("succesfully shot him\n");
                             printf("\033[0m");
+                            Score += 50;
                             CurrentShell += 1;
                             DealerLives -= 1;
                             ShowLives(CurrentTurn,PlayerLives,DealerLives);
@@ -89,6 +94,7 @@ int main()
                             printf("the shell was blank\n");
                             ShowLives(CurrentTurn,PlayerLives,DealerLives);
                             CurrentShell += 1;
+                            Score -= 10;
                             switchturn(&CurrentTurn);
                         }
 
@@ -125,7 +131,6 @@ int main()
                         printf("the dealer didn't shoot himself\n");
                         CurrentShell += 1;
                         ShowLives(CurrentTurn,PlayerLives,DealerLives);
-                        switchturn(&CurrentTurn);
                         
                     }
 
@@ -138,14 +143,17 @@ int main()
 
 
         }
+        printf("\033[0;33m");
+        printf("%d.Score ",Score);
+        printf("\033[0m");
         printf("\033[1;31m");
         printf("Do you want to play again? (y/n)\n");
         printf("\033[0m");
-        scanf("%s", answer);
-        if (strcmp(answer, "y") == 0) {
+        menu_input_strings(answer , 10);
+        if (strcmp(answer, "y\n") == 0) {
                 printf("Great.\n");
         }
-        if (strcmp(answer, "n") == 0) {
+        if (strcmp(answer, "n\n") == 0) {
                 printf("Thanks for playing! Goodbye.\n");
                 exit(0);
                 break; // Exit the loop and terminate the program

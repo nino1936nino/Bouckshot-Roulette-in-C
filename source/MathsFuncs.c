@@ -27,8 +27,19 @@ void shuffle_bullets(char array[],short int *BlankBullets,short int *LiveBullets
         array[randomIndex] = temp;
     }
 }
-int random_range(int min, int max) {
+int random_range(int min, int max)
+{
     int rd_num = rand() % (max - min + 1) + min;
     return rd_num;
 }
 
+static void menu_input_buffer_clear()
+{
+    char c;
+    while((c = getchar()) != '\n' && c != EOF);
+}
+void menu_input_strings(char* buff, int size)
+{
+    if ((fgets(buff,size,stdin)) && !strchr(buff, '\n'))
+    menu_input_buffer_clear();
+}
